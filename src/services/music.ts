@@ -9,9 +9,15 @@ export const getAllMusics = async () => {
             published: true
         },
         include: {
-            author: true
+            author: {
+                select: {
+                    id: true,
+                    name: true
+                }
+            }
         }
     });
+
     return music;
 }
 
@@ -40,7 +46,7 @@ export const createMusic = async ( data: MusicParams ) : Promise<ErroMusic> => {
         return {erro: false, msg: 'sucess', music}
     }catch(err){
         console.log(err)
-        return {erro: true, msg: 'error'};
+        return {erro: true, msg: 'error ao salvar a musica'};
     }
         
 }

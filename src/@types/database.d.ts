@@ -13,6 +13,8 @@ export interface UserParams {
     id: string
     name: string
     email: string
+    author: boolean
+    password?: string
 }
 
 export interface ErroUser {

@@ -2,22 +2,38 @@ import multer from 'multer';
 import express from 'express';
 import path from 'path'
 
-import { mullterConfig } from './configs/multer';
-import { getAuthotMusic } from './controllers/user';
-import { getMusics, getMusicsStream, searchMusic, uploadMusic } from './controllers/music';
+import { coverMulterConfig, musicMulterConfig } from './configs/multer';
 
-const fileUpload = multer(mullterConfig);
+import { registerUser, getAuthotMusic, login, validar } from './controllers/user';
+import { getMusics, getMusicsStream, saveMusic, searchMusic } from './controllers/music';
+import { uploadCoverRequest, uploadMusicRequest } from './controllers/upload';
+
+import { auth } from './middlewares/auth';
+
+const musicUpload = multer(musicMulterConfig);
+const coverUpload = multer(coverMulterConfig);
 
 const routes = express.Router();
+
+//Login Route
+routes.post('/login', login)
+routes.post('/validate', validar);
+routes.post('/register', registerUser);
 
 //Author Routes
 routes.post('/author', getAuthotMusic);
 
 //Music Routes
-routes.get('/list/musics', getMusics);
-routes.post('/musuc/searsh', searchMusic);
-routes.post('/music/upload', fileUpload.array('files'), uploadMusic)
 routes.use('/music/cover', express.static(path.resolve(__dirname, '..', 'tmp', 'uploads', 'image')))
+
+routes.get('/list/musics', getMusics);
 routes.get('/music/:musicName', getMusicsStream);
+
+routes.post('/music/searsh', searchMusic);
+routes.post('/music/create', saveMusic)
+
+//Uploads routes
+routes.post('/upload/music', musicUpload.single('music'), uploadMusicRequest)
+routes.post('/upload/cover', coverUpload.single('cover'), uploadCoverRequest)
 
 export = routes;

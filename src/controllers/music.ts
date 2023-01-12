@@ -60,30 +60,25 @@ export const searchMusic = async (req: Request, res:Response) => {
     }
 }
 
-export const uploadMusic = async (req: Request, res: Response) => {
-    const { title, cover, color, authorId, published }: MusicParams = req.body
-
+export const saveMusic = async (req: Request, res: Response) => {
+    const { title, cover, color, authorId, published, uri, duration } : MusicParams = req.body;
+    
     try {
-        const file = req.file;
+        const { erro: idErro, msg: idMsg } = await getUserID(authorId);
 
-        if(file){
-            const { erro: idErro, msg: idMsg } = await getUserID(authorId);
+        if( idErro )return res.status(401).json({ msg: idMsg })
 
-            if( idErro )return res.status(401).json({ msg: idMsg })
+        const { erro: createErro, msg: createMsg } = await createMusic({
+            uri,
+            title,
+            cover,
+            color,
+            duration,
+            authorId, 
+            published
+        })
 
-            const { erro: createErro, msg: createMsg } = await createMusic({
-                uri: file.filename,
-                title,
-                cover,
-                color,
-                duration: file.size,
-                authorId, 
-                published: published ? true : false  
-            })
-
-            if( createErro )return res.status(401).json({msg: createMsg})
-        }
-        
+        if( createErro )return res.status(401).json({msg: createMsg})
 
         return res.status(200).json({msg: 'song published successfully'});
     } catch(err) {
