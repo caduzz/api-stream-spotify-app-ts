@@ -5,16 +5,24 @@ export interface MusicParams {
     cover: string
     color: string
     duration: number
-    published: boolean
+    published?: boolean
     authorId: string
+    date?: Date
+}
+
+export interface HistoricParams {
+    id?: string
+    date?: Date | string
+    userId: string
+    musicId: string
 }
 
 export interface UserParams {
-    id: string
-    name: string
+    id?: string
     email: string
+    name: string
+    password: string
     author: boolean
-    password?: string
 }
 
 export interface ErroUser {
@@ -27,4 +35,9 @@ export interface ErroMusic {
     erro: boolean
     msg: string
     music?: MusicParams 
+}
+export interface ErrorHistoric {
+    erro: boolean
+    msg: string
+    historic?: HistoricParams
 }

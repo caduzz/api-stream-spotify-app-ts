@@ -3,10 +3,11 @@ import { ErroMusic, MusicParams } from "../@types/database";
 
 const prisma = new PrismaClient();
 
-export const getAllMusics = async () => {
-    const music = await prisma.music.findMany({
+
+export const getMusicById = async ( id: string ) => {
+    const music = await prisma.music.findUnique({
         where: { 
-            published: true
+            id
         },
         include: {
             author: {
@@ -15,6 +16,21 @@ export const getAllMusics = async () => {
                     name: true
                 }
             }
+        }
+    });
+
+    return music;   
+}
+
+export const getAllMusics = async () => {
+    const music = await prisma.music.findMany({
+        where: { 
+            published: true
+        },
+        select: {
+            id: true,
+            title: true,
+            cover: true
         }
     });
 
@@ -47,6 +63,5 @@ export const createMusic = async ( data: MusicParams ) : Promise<ErroMusic> => {
     }catch(err){
         console.log(err)
         return {erro: true, msg: 'error ao salvar a musica'};
-    }
-        
+    }        
 }

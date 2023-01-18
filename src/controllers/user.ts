@@ -8,7 +8,7 @@ import { generateToken, tokenValidate } from '../services/token';
 
 export const getAuthotMusic = async (req: Request, res: Response) => {
     try {
-        const {id} = req.body;
+        const { id } = req.body;
         const { user } = await getUserID(id);
         
         if(user){
@@ -38,9 +38,9 @@ export const registerUser = async (req: Request, res: Response) => {
 export const validar = async (req: Request, res: Response) => {
     const { token } = req.body;
     if(!token)return res.json({error: 'Informe um token'})
-    const validar = tokenValidate(token);
+    const { error } = tokenValidate(token);
 
-    return res.status(200).json({validate: !validar?.error})
+    return res.status(200).json({validate: !error})
 }
 
 export const login = async (req: Request, res: Response) => {
@@ -62,7 +62,7 @@ export const login = async (req: Request, res: Response) => {
             const usuario = {
                 id: user.id, 
                 author: user.author, 
-                email: user.email, 
+                email: user.email,
                 name: user.name, 
                 token: token
             }

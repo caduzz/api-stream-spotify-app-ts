@@ -3,8 +3,18 @@ import { Request, Response } from 'express';
 import fs from 'fs'
 import { MusicParams } from '../@types/database';
 
-import { createMusic, getAllMusics, searchMusicName } from "../services/music";
+import { createMusic, getAllMusics, getMusicById, searchMusicName } from "../services/music";
 import { getUserID } from '../services/user';
+
+export const getUniqueMusic = async (req: Request, res: Response) => {
+    try {
+        const { id } = req.body; 
+        const music = await getMusicById(id);
+        res.status(200).json(music)
+    } catch (err) {
+        res.status(500).json({msg: 'music not found'})
+    }
+}
 
 export const getMusics = async (req: Request, res: Response) => {
     try {

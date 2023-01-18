@@ -4,8 +4,9 @@ import path from 'path'
 
 import { coverMulterConfig, musicMulterConfig } from './configs/multer';
 
+import { listHistoric, saveHistoric } from './controllers/historic';
 import { registerUser, getAuthotMusic, login, validar } from './controllers/user';
-import { getMusics, getMusicsStream, saveMusic, searchMusic } from './controllers/music';
+import { getMusics, getMusicsStream, getUniqueMusic, saveMusic, searchMusic } from './controllers/music';
 import { uploadCoverRequest, uploadMusicRequest } from './controllers/upload';
 
 import { auth } from './middlewares/auth';
@@ -23,12 +24,17 @@ routes.post('/register', registerUser);
 //Author Routes
 routes.post('/author', getAuthotMusic);
 
+//User Create
+routes.post('/save/hitoric', saveHistoric)
+routes.post('/list/hitoric', listHistoric)
+
 //Music Routes
 routes.use('/music/cover', express.static(path.resolve(__dirname, '..', 'tmp', 'uploads', 'image')))
 
 routes.get('/list/musics', getMusics);
 routes.get('/music/:musicName', getMusicsStream);
 
+routes.post('/music', getUniqueMusic);
 routes.post('/music/searsh', searchMusic);
 routes.post('/music/create', saveMusic)
 

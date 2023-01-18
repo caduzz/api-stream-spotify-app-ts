@@ -8,6 +8,16 @@ CREATE TABLE "User" (
 );
 
 -- CreateTable
+CREATE TABLE "Historic" (
+    "id" TEXT NOT NULL PRIMARY KEY,
+    "date" DATETIME NOT NULL,
+    "userId" TEXT NOT NULL,
+    "musicId" TEXT NOT NULL,
+    CONSTRAINT "Historic_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT "Historic_musicId_fkey" FOREIGN KEY ("musicId") REFERENCES "Music" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
+);
+
+-- CreateTable
 CREATE TABLE "Music" (
     "id" TEXT NOT NULL PRIMARY KEY,
     "uri" TEXT NOT NULL,

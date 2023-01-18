@@ -17,7 +17,18 @@ model User {
   password String
   author   Boolean
 
-  musics Music[]
+  musics   Music[]
+  historic Historic[]
+}
+
+model Historic {
+  id      String   @id @default(uuid())
+  date    DateTime @default(now())
+  userId  String
+  musicId String
+
+  user   User  @relation(fields: [userId], references: [id])
+  musics Music @relation(fields: [musicId], references: [id])
 }
 
 model Music {
@@ -28,7 +39,9 @@ model Music {
   color     String
   duration  Int
   published Boolean @default(false)
-  authorId  String
 
-  author User @relation(fields: [authorId], references: [id])
+  authorId String
+
+  author   User       @relation(fields: [authorId], references: [id])
+  historic Historic[]
 }

@@ -5,6 +5,7 @@
   "license": "MIT",
   "scripts": {
     "build": "tsc",
+    "dev::migrate": "npx prisma migrate dev",
     "dev": "tsnd --exit-child src/server.ts"
   },
   "dependencies": {
